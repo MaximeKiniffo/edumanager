@@ -1,7 +1,4 @@
-export interface Professeur {
-  id: string
-  nom: string
-  prenom: string
-  matiereIds: string[]
-  userId: string
-}
+import type { z } from 'zod'
+import type { ProfesseurSchema } from '@/schemas'
+
+export type Professeur = z.infer<typeof ProfesseurSchema>

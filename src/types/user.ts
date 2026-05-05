@@ -1,10 +1,6 @@
-export type Role = 'admin' | 'professeur' | 'eleve'
+import type { z } from 'zod'
+import type { RoleSchema, UserSchema, LoginCredentialsSchema } from '@/schemas'
 
-export interface User {
-  id: string
-  nom: string
-  prenom: string
-  email: string
-  password: string
-  role: Role
-}
+export type Role = z.infer<typeof RoleSchema>
+export type User = z.infer<typeof UserSchema>
+export type LoginCredentials = z.infer<typeof LoginCredentialsSchema>

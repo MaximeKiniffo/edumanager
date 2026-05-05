@@ -1,8 +1,9 @@
-export interface Eleve {
-  id: string
-  nom: string
-  prenom: string
-  dateNaissance: string
-  classeId: string
-  userId: string
+import type { z } from 'zod'
+import type { EleveSchema } from '@/schemas'
+import type { Classe } from './classe'
+
+export type Eleve = z.infer<typeof EleveSchema>
+
+export interface EleveWithDetails extends Eleve {
+  classe: Classe
 }

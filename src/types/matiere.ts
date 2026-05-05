@@ -1,5 +1,4 @@
-export interface Matiere {
-  id: string
-  nom: string
-  couleur: string
-}
+import type { z } from 'zod'
+import type { MatiereSchema } from '@/schemas'
+
+export type Matiere = z.infer<typeof MatiereSchema>

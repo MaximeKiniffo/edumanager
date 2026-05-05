@@ -1,6 +1,4 @@
-export interface Classe {
-  id: string
-  nom: string
-  niveau: string
-  anneeScolaire: string
-}
+import type { z } from 'zod'
+import type { ClasseSchema } from '@/schemas'
+
+export type Classe = z.infer<typeof ClasseSchema>
