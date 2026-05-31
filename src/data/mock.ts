@@ -1,12 +1,4 @@
-import type { User, LoginCredentials, Role } from '@/types'
-
-export const MOCK_CREDENTIALS: Array<LoginCredentials & { user: User }> = [
-  {
-    email: 'admin@edu.fr',
-    password: 'admin123',
-    user: { id: '1', nom: 'Admin', prenom: 'Super', email: 'admin@edu.fr', role: 'admin' },
-  },
-]
+import type { User, Role } from '@/types'
 
 export const MOCK_USERS: Record<Role, User> = {
   admin: {
