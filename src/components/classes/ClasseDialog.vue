@@ -18,6 +18,8 @@
           <v-select
             v-model="form.niveau"
             :items="niveaux"
+            item-title="label"
+            item-value="value"
             label="Niveau"
             variant="outlined"
             density="compact"
@@ -71,7 +73,15 @@ const formRef = ref()
 const submitError = ref('')
 
 // Liste fixe des niveaux scolaires proposés dans le v-select
-const niveaux = ['6ème', '5ème', '4ème', '3ème', '2nde', '1ère', 'Terminale']
+const niveaux = [
+  { label: '6ème', value: '6e' },
+  { label: '5ème', value: '5e' },
+  { label: '4ème', value: '4e' },
+  { label: '3ème', value: '3e' },
+  { label: '2nde', value: '2nde' },
+  { label: '1ère', value: '1ere' },
+  { label: 'Terminale', value: 'Terminale' },
+]
 
 // Règles de validation réutilisables sur les champs du formulaire
 const rules = {
