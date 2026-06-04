@@ -33,6 +33,14 @@
             density="compact"
             :rules="[rules.required, rules.anneeScolaire]"
           />
+          <v-alert
+            v-if="submitError"
+            type="error"
+            variant="tonal"
+            density="compact"
+          >
+            {{ submitError }}
+          </v-alert>
         </v-form>
       </v-card-text>
 
@@ -47,6 +55,7 @@
 <script setup lang="ts">
 import { ref, reactive, watch } from 'vue'
 import { useClassesStore } from '@/stores/classes'
+import { isConsecutiveSchoolYear } from '@/utils/schoolYear'
 import type { Classe } from '@/types'
 
 // Props reçues depuis ClassesView : état du dialog + classe à éditer (null = création)
@@ -59,6 +68,7 @@ const store = useClassesStore()
 
 // Référence sur le composant v-form pour déclencher la validation au submit
 const formRef = ref()
+const submitError = ref('')
 
 // Liste fixe des niveaux scolaires proposés dans le v-select
 const niveaux = ['6ème', '5ème', '4ème', '3ème', '2nde', '1ère', 'Terminale']
@@ -66,7 +76,8 @@ const niveaux = ['6ème', '5ème', '4ème', '3ème', '2nde', '1ère', 'Terminale
 // Règles de validation réutilisables sur les champs du formulaire
 const rules = {
   required: (v: string) => !!v || 'Ce champ est obligatoire',
-  anneeScolaire: (v: string) => /^\d{4}-\d{4}$/.test(v) || 'Format attendu : 2025-2026',
+  anneeScolaire: (v: string) =>
+    isConsecutiveSchoolYear(v) || 'Année scolaire attendue : 2025-2026',
 }
 
 // Objet réactif qui représente les valeurs du formulaire
@@ -77,6 +88,7 @@ const form = reactive({ nom: '', niveau: '', anneeScolaire: '' })
 // - en mode création : on remet les champs à vide
 watch(() => props.open, (val) => {
   if (!val) return
+  submitError.value = ''
   if (props.classe) {
     form.nom = props.classe.nom
     form.niveau = props.classe.niveau
@@ -93,14 +105,19 @@ watch(() => props.open, (val) => {
 // 2. Selon le mode, on appelle update() ou add() sur le store
 // 3. On ferme le dialog
 async function submit() {
+  submitError.value = ''
   const { valid } = await formRef.value.validate()
   if (!valid) return
 
-  if (props.classe) {
-    store.update({ id: props.classe.id, ...form })
-  } else {
-    store.add({ id: crypto.randomUUID(), ...form })
+  const saved = props.classe
+    ? store.update({ id: props.classe.id, ...form })
+    : store.add({ id: crypto.randomUUID(), ...form })
+
+  if (!saved) {
+    submitError.value = "Impossible d'enregistrer la classe. Veuillez vérifier les informations."
+    return
   }
+
   emit('update:open', false)
 }
 </script>

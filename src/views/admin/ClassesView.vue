@@ -40,7 +40,7 @@ function openCreate() {
   dialogOpen.value = true
 }
 function openEdit(classe: Classe) {
-  editingClasse.value = classe
+  editingClasse.value = { ...classe }
   dialogOpen.value = true
 }
 </script>
