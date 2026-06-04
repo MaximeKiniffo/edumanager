@@ -10,17 +10,24 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
+
 import StatCard from '@/components/common/StatCard.vue';
+
 import { useClassesStore } from '@/stores/classes';
 import { useElevesStore } from '@/stores/eleves';
 import { useProfesseursStore } from '@/stores/professeurs';
 import { useCoursStore } from '@/stores/cours';
 
+const classesStore = useClassesStore();
+const elevesStore = useElevesStore();
+const professeursStore = useProfesseursStore();
+const coursStore = useCoursStore();
+
 const stats = computed(() => [
-  { title: 'Classes',     value: useClassesStore().classes.length,  icon: 'mdi-school',          color: 'blue'   },
-  { title: 'Élèves',      value: useElevesStore().eleves.length,  icon: 'mdi-account-group',   color: 'green'  },
-  { title: 'Professeurs', value: useProfesseursStore().professeurs.length,  icon: 'mdi-account-tie',     color: 'orange' },
-  { title: 'Cours',       value: useCoursStore().cours.length,  icon: 'mdi-book-open-variant',color: 'purple' },
+  { title: 'Classes',     value: classesStore.classes.length,  icon: 'mdi-school',          color: 'blue'   },
+  { title: 'Élèves',      value: elevesStore.eleves.length,  icon: 'mdi-account-group',   color: 'green'  },
+  { title: 'Professeurs', value: professeursStore.professeurs.length,  icon: 'mdi-account-tie',     color: 'orange' },
+  { title: 'Cours',       value: coursStore.cours.length,  icon: 'mdi-book-open-variant',color: 'purple' },
 ])
 
 
